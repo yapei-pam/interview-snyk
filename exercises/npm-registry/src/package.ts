@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import got from 'got';
 import { NPMPackage } from './types';
-
+import latestVersion from 'latest-version';
 /**
  * Attempts to retrieve package data from the npm registry and return it
  */
@@ -13,9 +13,13 @@ export const getPackage: RequestHandler = async function (req, res, next) {
       `https://registry.npmjs.org/${name}`,
     ).json();
 
-    const dependencies = npmPackage.versions[version].dependencies;
+    const latest = await latestVersion(name);
 
-    return res.status(200).json({ name, version, dependencies });
+    const packageVersion = version !== 'undefined' ? version : latest;
+    const dependencies = npmPackage?.versions?.[packageVersion]?.dependencies || null;
+
+    return res.status(200).json({ dependencies, query: name.concat(`@${packageVersion}`) });
+
   } catch (error) {
     return next(error);
   }

@@ -1,7 +1,7 @@
 import { createApp } from './app';
 import * as getPort from 'get-port';
 
-const DEFAULT_PORT = 3000;
+const DEFAULT_PORT = 8080;
 
 async function main() {
   // Initialise the server framework and routing

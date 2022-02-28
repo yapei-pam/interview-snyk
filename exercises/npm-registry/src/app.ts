@@ -6,10 +6,9 @@ import { getPackage } from './package';
  */
 export function createApp() {
   const app = express();
-
   app.use(express.json());
 
-  app.get('/package/:name/:version', getPackage);
+  app.get('/api/package/:name/:version', getPackage);
 
   return app;
 }
